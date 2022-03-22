@@ -14,7 +14,7 @@ namespace Hotel.MVVM.Model.Data
         public DbSet<Reservations> reservations { get; set; }
         public ApplicationContext()
         {
-            Database.EnsureCreated();
+           
         }
         protected  override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
