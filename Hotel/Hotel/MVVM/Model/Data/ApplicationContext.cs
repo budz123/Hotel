@@ -18,7 +18,7 @@ namespace Hotel.MVVM.Model.Data
         }
         protected  override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data source = PC-232-11\SQLEXPRESS;initial Catalog=TermPaper; User ID=U-19;Password=19$RPEe");
+            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-HCFHTED\SQLEXPRESS;Initial Catalog=TermPaper;Integrated Security=True");
 
         }
     }
