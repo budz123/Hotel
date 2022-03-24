@@ -1,98 +1,114 @@
-﻿using ManageStaffDBApp.Model.Data;
+﻿using Hotel.MVVM.Model.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hotel.MVVM.Model;
 
-namespace ManageStaffDBApp.Model
+namespace Hotel.Model
 {
     public static class DataWorker
     {
-        //получить все отделы
-        public static List<Department> GetAllDepartments()
+        //получить все Clients
+        public static List<Clients> GetAllClients()
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                var result = db.Departments.ToList();
+                var result = db.clients.ToList();
                 return result;
             }
         }
-        //получить все позиции
-        public static List<Position> GetAllPositions()
+        //получить все Rooms
+        public static List<Rooms> GetAllRooms()
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                var result = db.Positions.ToList();
+                var result = db.rooms.ToList();
                 return result;
             }
         }
-        //получить всех сотрудников
-        public static List<User> GetAllUsers()
+        //получить всех Reservations
+        public static List<Reservations> GetAllReservations()
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                var result = db.Users.ToList();
+                var result = db.reservations.ToList();
                 return result;
             }
         }
-        //создать отдел
-        public static string CreateDepartment(string name)
+        //создать Rooms
+        public static string CreateRooms(string Number, int Floor, string Type,int Capfcity,string Status,string Price)
         {
             string result = "Уже существует";
             using (ApplicationContext db = new ApplicationContext())
             {
                 //проверяем сущесвует ли отдел
-                bool checkIsExist = db.Departments.Any(el => el.Name == name);
+                bool checkIsExist = db.rooms.Any(el => el.Number == Number);
                 if (!checkIsExist)
                 {
-                    Department newDepartment = new Department { Name = name };
-                    db.Departments.Add(newDepartment);
+                    Rooms newRooms = new Rooms 
+                    { 
+                        Number = Number,
+                        Floor = Floor,
+                        Type = Type,
+                        Capfcity = Capfcity,
+                        Status = Status,
+                        Price = Price,
+
+                    };
+                    db.rooms.Add(newRooms);
                     db.SaveChanges();
                     result = "Сделано!";
                 }
                 return result;
             }
         }
-        //содать позицию
-        public static string CreatePosition(string name, decimal salary, int maxNumber, Department department)
+        //содать Reservations
+        public static string CreateReservations(DateTime CheckInDate, DateTime CheckOutDate,Rooms rooms,string ReservationsStatus,string TypePayment,Clients clients)
         {
             string result = "Уже существует";
             using (ApplicationContext db = new ApplicationContext())
             {
                 //проверяем сущесвует ли позиция
-                bool checkIsExist = db.Positions.Any(el => el.Name == name && el.Salary == salary);
+                bool checkIsExist = db.reservations.Any(el => el.RoomId == rooms);
                 if (!checkIsExist)
                 {
-                    Position newPosition = new Position
+                    Reservations newReservations = new Reservations
                     {
-                        Name = name,
-                        Salary = salary,
-                        MaxNumber = maxNumber,
-                        DepartmentId = department.Id
+                        CheckInDate = CheckInDate,
+                        CheckOutdate = CheckOutDate,
+                        RoomId = rooms,
+                        ReservationsStatus = ReservationsStatus,
+                        TypePayment = TypePayment,
+                        ClientsId = clients,
+
                     };
-                    db.Positions.Add(newPosition);
+                    db.reservations.Add(newReservations);
                     db.SaveChanges();
                     result = "Сделано!";
                 }
                 return result;
             }
         }
-        //создать сотрудника
-        public static string CreateUser(string name, string surName, string phone, Position position)
+        //создать Clients
+        public static string CreateClients(string FirstName, string lastName, string PhoneNumber, string Gender,string Passport, DateTime DateOfBrith)
         {
             string result = "Уже существует";
             using (ApplicationContext db = new ApplicationContext())
             {
                 //check the user is exist
-                bool checkIsExist = db.Users.Any(el => el.Name == name && el.SurName == surName && el.Position == position);
+                bool checkIsExist = db.clients.Any(el => el.FirstName == FirstName && el.LastName == FirstName );
                 if (!checkIsExist)
                 {
-                    User newUser = new User
+                    Clients newClients = new Clients
                     {
-                        Name = name,
-                        SurName = surName,
-                        Phone = phone,
-                        PositionId = position.Id
+                        FirstName = FirstName,
+                        LastName = lastName,
+                        PhoneNumber = PhoneNumber,
+                        Gender = Gender,
+                        Passport = Passport,
+                        DateOfBrith = DateOfBrith,
                     };
-                    db.Users.Add(newUser);
+                    db.clients.Add(newClients);
                     db.SaveChanges();
                     result = "Сделано!";
                 }
@@ -100,127 +116,137 @@ namespace ManageStaffDBApp.Model
             }
         }
         //удаление отдел
-        public static string DeleteDepartment(Department department)
+        public static string DeleteReservationst(Reservations Reservations)
         {
             string result = "Такого отела не существует";
             using (ApplicationContext db = new ApplicationContext())
             {
-                db.Departments.Remove(department);
+                db.reservations.Remove(Reservations);
                 db.SaveChanges();
-                result = "Сделано! Отдел " + department.Name + " удален";
+                result = "Сделано! Отдел " + Reservations.Id + Reservations.ClientsId + "удален";
             }
             return result;
         }
         //удаление позицию
-        public static string DeletePosition(Position position)
+        public static string DeleteRooms(Rooms Rooms)
         {
             string result = "Такой позиции не существует";
             using (ApplicationContext db = new ApplicationContext())
             {
                 //check position is exist
-                db.Positions.Remove(position);
+                db.rooms.Remove(Rooms);
                 db.SaveChanges();
-                result = "Сделано! Позиция " + position.Name + " удалена";
+                result = "Сделано! Позиция " + Rooms.Number + " удалена";
             }
             return result;
         }
         //удаление сотрудника
-        public static string DeleteUser(User user)
+        public static string DeleteClients(Clients DelClients)
         {
             string result = "Такого сотрудника не существует";
             using (ApplicationContext db = new ApplicationContext())
             {
-                db.Users.Remove(user);
+                db.clients.Remove(DelClients);
                 db.SaveChanges();
-                result = "Сделано! Сотрудник " + user.Name + " уволен";
+                result = "Сделано! Clients " + DelClients.FirstName + " Del";
             }
             return result;
         }
-        //редактирование отдел
-        public static string EditDepartment(Department oldDepartment, string newName)
+        //редактирование Reservationst
+        public static string EditReservationst(Reservations oldReservationst, DateTime newCheckInDate, DateTime newCheckOutDate, Rooms newrooms, string newReservationsStatus, string newTypePayment, Clients newclients)
         {
             string result = "Такого отела не существует";
             using (ApplicationContext db = new ApplicationContext())
             {
-                Department department = db.Departments.FirstOrDefault(d => d.Id == oldDepartment.Id);
-                department.Name = newName;
+                Reservations Reservations = db.reservations.FirstOrDefault(d => d.Id == oldReservationst.Id);
+                Reservations.CheckInDate = newCheckInDate;
+                Reservations.CheckOutdate = newCheckOutDate;
+                Reservations.RoomId = newrooms;
+                Reservations.ReservationsStatus = newReservationsStatus;
+                Reservations.TypePayment = newTypePayment;
+                Reservations.ClientsId = newclients;
+
                 db.SaveChanges();
-                result = "Сделано! Отдел " + department.Name + " изменен";
+                result = "Сделано! Отдел " + Reservations.Id + " изменен";
             }
             return result;
         }
-        //редактирование позицию
-        public static string EditPosition(Position oldPosition, string newName, int newMaxNumber, decimal newSalary, Department newDepartment)
+        //редактирование Rooms
+        public static string EditRooms(Rooms oldRooms, string newNumber, int newFloor, string newType, int newCapfcity, string newStatus, string newPrice)
         {
             string result = "Такой позиции не существует";
             using (ApplicationContext db = new ApplicationContext())
             {
-                Position position = db.Positions.FirstOrDefault(p => p.Id == oldPosition.Id);
-                position.Name = newName;
-                position.Salary = newSalary;
-                position.MaxNumber = newMaxNumber;
-                position.DepartmentId = newDepartment.Id;
+                Rooms Rooms = db.rooms.FirstOrDefault(p => p.Id == oldRooms.Id);
+                Rooms.Number = newNumber;
+                Rooms.Floor = newFloor;
+                Rooms.Type = newType;
+                Rooms.Capfcity = newCapfcity;
+                Rooms.Status = newStatus;
+                Rooms.Price = newPrice;
                 db.SaveChanges();
-                result = "Сделано! Позиция " + position.Name + " изменена";
+                result = "Сделано! Rooms " + Rooms.Number + " изменена";
             }
             return result;
         }
         //редактирование сотрудника
-        public static string EditUser(User oldUser, string newName, string newSurName, string newPhone, Position newPosition)
+        public static string EditClients(Clients oldClients, string newFirstName, string newlastName, string newPhoneNumber, string newGender, string newPassport, DateTime newDateOfBrith)
         {
             string result = "Такого сотрудника не существует";
             using (ApplicationContext db = new ApplicationContext())
             {
                 //check user is exist
-                User user = db.Users.FirstOrDefault(p => p.Id == oldUser.Id);
-                if (user != null)
+                Clients Clients = db.clients.FirstOrDefault(p => p.Id == oldClients.Id);
+                if (Clients != null)
                 {
-                    user.Name = newName;
-                    user.SurName = newSurName;
-                    user.Phone = newPhone;
-                    user.PositionId = newPosition.Id;
+                    Clients.FirstName = newFirstName;
+                    Clients.LastName = newlastName;
+                    Clients.PhoneNumber = newPhoneNumber;
+                    Clients.Gender = newGender;
+                    Clients.Passport = newPassport;
+                    Clients.DateOfBrith = newDateOfBrith;
                     db.SaveChanges();
-                    result = "Сделано! Сотрудник " + user.Name + " изменен";
+                    result = "Сделано! Сотрудник " + Clients.FirstName + " изменен";
                 }
             }
             return result;
         }
 
-        //получение позиции по id позитиции
-        public static Position GetPositionById(int id)
+        //получение Clients по id Clients
+        public static Clients GetClientsById(int id)
         {
             using(ApplicationContext db = new ApplicationContext())
             {
-                Position pos = db.Positions.FirstOrDefault(p => p.Id == id);
+                Clients pos = db.clients.FirstOrDefault(p => p.Id == id);
                 return pos;
             }
         }
         //получение отдела по id отдела
-        public static Department GetDepartmentById(int id)
+        public static Rooms GetRoomsById(int id)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                Department pos = db.Departments.FirstOrDefault(p => p.Id == id);
+                Rooms pos = db.rooms.FirstOrDefault(p => p.Id == id);
                 return pos;
             }
         }
         //получение всех пользователей по id позиции
-        public static List<User> GetAllUsersByPositionId(int id)
+        public static List<Reservations> GetAllUsersByPositionId(int id)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                List<User> users = (from user in GetAllUsers() where user.PositionId == id select user).ToList();
+                List<Reservations> users = (from Reservations in GetAllReservations() where Reservations.Id == id select Reservations).ToList();
                 return users;
             }
         }
         //получение всех позиций по id отдела
-        public static List<Position> GetAllPositionsByDepartmentId(int id)
-        {
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                List<Position> positions = (from position in GetAllPositions() where position.DepartmentId == id select position).ToList();
-                return positions;
-            }
-        }
+        //public static List<Position> GetAllPositionsByDepartmentId(int id)
+        //{
+        //    using (ApplicationContext db = new ApplicationContext())
+        //    {
+        //        List<Position> positions = (from position in GetAllPositions() where position.DepartmentId == id select position).ToList();
+        //        return positions;
+        //    }
+        //}
     }
 }

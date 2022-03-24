@@ -13,18 +13,22 @@ namespace Hotel.MVVM.Model
        
          [Key]
         public int Id { get; set; }
+
         [Required]
         public DateTime CheckInDate { get; set;}
+
         [Required]
         public DateTime CheckOutdate { get; set;}
-        [Required]
+      
         [ForeignKey("RoomId")]
         public Rooms RoomId { get; set; }
+
         [Required]
         public string ReservationsStatus { get; set; }
+
         [Required]
-        public int TypePayment { get; set; }
-        [Required]
+        public string TypePayment { get; set; }
+    
         [ForeignKey("ClietnsId")]
         public Clients ClientsId { get; set; }
     }
