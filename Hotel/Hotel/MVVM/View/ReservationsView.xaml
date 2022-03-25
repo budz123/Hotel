@@ -1,4 +1,4 @@
-﻿<Window x:Class="TermPaper.MVVM.View.ReservationsView"
+﻿<Window x:Class="Hotel.MVVM.View.ReservationsView"
         Icon="\Logo.png"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,10 +7,8 @@
         xmlns:local="clr-namespace:TermPaper.MVVM.View"
         mc:Ignorable="d"
         Title="ReservationsView" Height="500" Width="800"
-        xmlns:viewmodel="clr-namespace:TermPaper.MVVM.ViewModel">
-    <Window.DataContext>
-        <viewmodel:ReservationsViewModel/>
-    </Window.DataContext>
+        xmlns:viewmodel="clr-namespace:Hotel.MVVM.ViewModel">
+   
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

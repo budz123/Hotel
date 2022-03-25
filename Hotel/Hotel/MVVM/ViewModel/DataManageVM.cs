@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Hotel.Model;
 
+
 namespace ManageStaffDBApp.ViewModel
 {
     public class DataManageVM : INotifyPropertyChanged
@@ -365,18 +366,18 @@ namespace ManageStaffDBApp.ViewModel
         //методы открытия окон
         private void OpenAddDepartmentWindowMethod()
         {
-            AddNewDepartmentWindow newDepartmentWindow = new AddNewDepartmentWindow();
-            SetCenterPositionAndOpen(newDepartmentWindow);
+          ClientsView newClientsView = new ClientsView();
+            SetCenterPositionAndOpen(newClientsView);
         }
         private void OpenAddPositionWindowMethod()
         {
-            AddNewPositionWindow newPositionWindow = new AddNewPositionWindow();
-            SetCenterPositionAndOpen(newPositionWindow);
+            ReservationsView newReservationsView = new ReservationsView();
+            SetCenterPositionAndOpen(newReservationsView);
         }
         private void OpenAddUserWindowMethod()
         {
-            AddNewUserWindow newUserWindow = new AddNewUserWindow();
-            SetCenterPositionAndOpen(newUserWindow);
+            RoomsView newRoomsView = new RoomsView();
+            SetCenterPositionAndOpen(newRoomsView);
         }
         //окна редактирования
         private void OpenEditDepartmentWindowMethod(Department department)

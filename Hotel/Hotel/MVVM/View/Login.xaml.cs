@@ -17,9 +17,9 @@ namespace Hotel.MVVM.View
     /// <summary>
     /// Логика взаимодействия для Login.xaml
     /// </summary>
-    public partial class Login : Window
+    public partial class ClientsView : Window
     {
-        public Login()
+        public ClientsView()
         {
             InitializeComponent();
         }
