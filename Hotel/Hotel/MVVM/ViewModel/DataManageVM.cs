@@ -1,5 +1,5 @@
-﻿using ManageStaffDBApp.Model;
-using ManageStaffDBApp.View;
+﻿using Hotel.MVVM.Model;
+using Hotel.MVVM.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,90 +9,105 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Hotel.Model;
 
 namespace ManageStaffDBApp.ViewModel
 {
     public class DataManageVM : INotifyPropertyChanged
     {
         //все отделы
-        private List<Department> allDepartments = DataWorker.GetAllDepartments();
-        public List<Department> AllDepartments
+        private List<Clients> allClients = DataWorker.GetAllClients();
+        public List<Clients> AllClients
         {
-            get { return allDepartments; }
+            get { return allClients; }
             set
             {
-                allDepartments = value;
-                NotifyPropertyChanged("AllDepartments");
+                allClients = value;
+                NotifyPropertyChanged("allClients");
             }
         }
 
         //все позиции
-        private List<Position> allPositions = DataWorker.GetAllPositions();
-        public List<Position> AllPositions
+        private List<Rooms> allRooms = DataWorker.GetAllRooms();
+        public List<Rooms> AllRooms
         {
             get
             {
-                return allPositions;
+                return allRooms;
             }
             private set
             {
-                allPositions = value;
-                NotifyPropertyChanged("AllPositions");
+                allRooms = value;
+                NotifyPropertyChanged("AllRooms");
             }
         }
         //все сотрудники
-        private List<User> allUsers = DataWorker.GetAllUsers();
-        public List<User> AllUsers
+        private List<Reservations> allReservations = DataWorker.GetAllReservations();
+        public List<Reservations> AllReservations
         {
             get
             {
-                return allUsers;
+                return allReservations;
             }
             private set
             {
-                allUsers = value;
-                NotifyPropertyChanged("AllUsers");
+                allReservations = value;
+                NotifyPropertyChanged("AllallReservations");
             }
         }
 
-        //свойства для отдела
-        public static string DepartmentName { get; set; }
-        //свойства для позиций
-        public static string PositionName { get; set; }
-        public static decimal PositionSalary { get; set; }
-        public static int PositionMaxNumber { get; set; }
-        public static Department PositionDepartment { get; set; }
+        //свойства для Rooms
+        public static string oldrooms { get; set; }
+        public static string Number { get; set; }
+        public static int Floor { get; set; }
+        public static string Type { get; set; }
+        public static int Capfcity { get; set; }
+        public static string Status { get; set; }
+        public static string Price { get; set; }
 
-        //свойства для сотрудника
-        public static string UserName { get; set; }
-        public static string UserSurName { get; set; }
-        public static string UserPhone { get; set; }
-        public static Position UserPosition { get; set; }
+        //свойства для Resrvations
+        public static string oldRes { get; set; }
+        public static DateTime CheckInDate { get; set; }
+        public static DateTime CheckOutDate { get; set; }
+        public static Rooms Rooms { get; set; }
+        public static string ReservationStatus { get; set; }
+        public static string typePayment { get; set; }
+        public static Clients Clients { get; set; }
+
+        //свойства для Clients
+        public static string oldC { get; set; }
+        public static string FirstName { get; set; }
+        public static string LastName { get; set; }
+        public static string PhoneNumber { get; set; }
+        public static string Gender { get; set; }
+        public static string Passport{ get; set; }
+        public static DateTime DateOfBrith { get; set; }
+   
 
         //свойства для выделенных элементов
         public TabItem SelectedTabItem { get; set; }
-        public static User SelectedUser { get; set; }
-        public static Position SelectedPosition { get; set; }
-        public static Department SelectedDepartment { get; set; }
+        public static Clients SelectedClients { get; set; }
+        public static Rooms SelectedRooms { get; set; }
+        public static Reservations SelectedReservations { get; set; }
 
 
         #region COMMANDS TO ADD
-        private RelayCommand addNewDepartment;
-        public RelayCommand AddNewDepartment
+        private RelayCommand addClients;
+        public RelayCommand AddClients
         {
             get
             {
-                return addNewDepartment ?? new RelayCommand(obj =>
+                return addClients ?? new RelayCommand(obj =>
                 {
                     Window wnd = obj as Window;
                     string resultStr = "";
-                    if (DepartmentName == null || DepartmentName.Replace(" ", "").Length == 0)
+                    if (FirstName == null || FirstName.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "NameBlock");
                     }
                     else
                     {
-                        resultStr = DataWorker.CreateDepartment(DepartmentName);
+                        resultStr = DataWorker.CreateClients(FirstName,LastName,PhoneNumber,Gender,Passport,DateOfBrith);
                         UpdateAllDataView();
 
                         ShowMessageToUser(resultStr);
@@ -103,34 +118,23 @@ namespace ManageStaffDBApp.ViewModel
                 );
             }
         }
-        private RelayCommand addNewPosition;
-        public RelayCommand AddNewPosition
+        private RelayCommand addRooms;
+        public RelayCommand AddRooms
         {
             get
             {
-                return addNewPosition ?? new RelayCommand(obj =>
+                return addRooms ?? new RelayCommand(obj =>
                 {
                     Window wnd = obj as Window;
                     string resultStr = "";
-                    if(PositionName == null || PositionName.Replace(" ", "").Length == 0)
+                    if(Number == null || Number.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "NameBlock");
                     }
-                    if (PositionSalary == 0)
-                    {
-                        SetRedBlockControll(wnd, "SalaryBlock");
-                    }
-                    if (PositionMaxNumber == 0)
-                    {
-                        SetRedBlockControll(wnd, "MaxNumberBlock");
-                    }
-                    if (PositionDepartment == null)
-                    {
-                        MessageBox.Show("Укажите отдел");
-                    }
+                   
                     else
                     {
-                        resultStr = DataWorker.CreatePosition(PositionName, PositionSalary, PositionMaxNumber, PositionDepartment);
+                        resultStr = DataWorker.CreateRooms(Number,Floor,Type,Capfcity,Status,Price);
                         UpdateAllDataView();
 
                         ShowMessageToUser(resultStr);
@@ -141,34 +145,23 @@ namespace ManageStaffDBApp.ViewModel
                 );
             }
         }
-        private RelayCommand addNewUser;
-        public RelayCommand AddNewUser
+        private RelayCommand addReservations;
+        public RelayCommand AddReservations
         {
             get
             {
-                return addNewUser ?? new RelayCommand(obj =>
+                return addReservations ?? new RelayCommand(obj =>
                 {
                     Window wnd = obj as Window;
                     string resultStr = "";
-                    if (UserName == null || UserName.Replace(" ", "").Length == 0)
+                    if (ReservationStatus == null || ReservationStatus.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "NameBlock");
                     }
-                    if (UserSurName == null || UserSurName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControll(wnd, "SurNameBlock");
-                    }
-                    //if (UserPhone == null || UserPhone.Replace(" ", "").Length == 0)
-                    //{
-                    //    SetRedBlockControll(wnd, "SurNameBlock");
-                    //}
-                    if (UserPosition == null)
-                    {
-                        MessageBox.Show("Укажите позицию");
-                    }
+                   
                     else
                     {
-                        resultStr = DataWorker.CreateUser(UserName, UserSurName, UserPhone, UserPosition);
+                        resultStr = DataWorker.CreateReservations(CheckInDate, CheckOutDate,Rooms,ReservationStatus,typePayment,Clients);
                         UpdateAllDataView();
 
                         ShowMessageToUser(resultStr);
@@ -191,21 +184,21 @@ namespace ManageStaffDBApp.ViewModel
                 {
                     string resultStr = "Ничего не выбрано";
                     //если сотрудник
-                    if(SelectedTabItem.Name == "UsersTab" && SelectedUser != null)
+                    if(SelectedTabItem.Name == "UsersTab" && SelectedClients != null)
                     {
-                        resultStr = DataWorker.DeleteUser(SelectedUser);
+                        resultStr = DataWorker.DeleteClients(SelectedClients);
                         UpdateAllDataView();
                     }
                     //если позиция
-                    if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
+                    if (SelectedTabItem.Name == "PositionsTab" && SelectedRooms != null)
                     {
-                        resultStr = DataWorker.DeletePosition(SelectedPosition);
+                        resultStr = DataWorker.DeleteRooms(SelectedRooms);
                         UpdateAllDataView();
                     }
                     //если отдел
-                    if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null)
+                    if (SelectedTabItem.Name == "DepartmentsTab" && SelectedReservations != null)
                     {
-                        resultStr = DataWorker.DeleteDepartment(SelectedDepartment);
+                        resultStr = DataWorker.DeleteReservationst(SelectedReservations);
                         UpdateAllDataView();
                     }
                     //обновление
@@ -217,21 +210,21 @@ namespace ManageStaffDBApp.ViewModel
         }
 
         #region EDIT COMMANDS
-        private RelayCommand editUser;
-        public RelayCommand EditUser
+        private RelayCommand editClients;
+        public RelayCommand EditClients
         {
             get
             {
-                return editUser ?? new RelayCommand(obj =>
+                return editClients ?? new RelayCommand(obj =>
                 {
                     Window window = obj as Window;
                     string resultStr = "Не выбран сотрудник";
                     string noPositionStr = "Не выбрана новая должность";
-                    if(SelectedUser != null)
+                    if(SelectedClients != null)
                     {
-                        if(UserPosition != null)
+                        if(SelectedClients != null)
                         {
-                            resultStr = DataWorker.EditUser(SelectedUser, UserName, UserSurName, UserPhone, UserPosition);
+                            resultStr = DataWorker.EditClients(SelectedClients,FirstName,LastName,PhoneNumber,Gender,Passport,DateOfBrith);
 
                             UpdateAllDataView();
                             SetNullValuesToProperties();
@@ -246,21 +239,21 @@ namespace ManageStaffDBApp.ViewModel
                 );
             }
         }
-        private RelayCommand editPosition;
-        public RelayCommand EditPosition
+        private RelayCommand editRooms;
+        public RelayCommand EditRooms
         {
             get
             {
-                return editPosition ?? new RelayCommand(obj =>
+                return editRooms ?? new RelayCommand(obj =>
                 {
                     Window window = obj as Window;
                     string resultStr = "Не выбрана позиция";
                     string noDepartmentStr = "Не выбран новый отдел";
-                    if (SelectedPosition != null)
+                    if (SelectedRooms != null)
                     {
-                        if (PositionDepartment != null)
+                        if (SelectedRooms != null)
                         {
-                            resultStr = DataWorker.EditPosition(SelectedPosition, PositionName, PositionMaxNumber, PositionSalary, PositionDepartment);
+                            resultStr = DataWorker.EditRooms(SelectedRooms,Number,Floor,typePayment,Capfcity,Status,Price);
 
                             UpdateAllDataView();
                             SetNullValuesToProperties();
@@ -276,18 +269,18 @@ namespace ManageStaffDBApp.ViewModel
             }
         }
 
-        private RelayCommand editDepartment;
+        private RelayCommand editReservations;
         public RelayCommand EditDepartment
         {
             get
             {
-                return editDepartment ?? new RelayCommand(obj =>
+                return editReservations ?? new RelayCommand(obj =>
                 {
                     Window window = obj as Window;
                     string resultStr = "Не выбран отдел";
-                    if (SelectedDepartment != null)
+                    if (SelectedReservations != null)
                     {
-                        resultStr = DataWorker.EditDepartment(SelectedDepartment, DepartmentName);
+                        resultStr = DataWorker.EditReservationst(SelectedReservations,CheckInDate,CheckOutDate,Rooms,ReservationStatus,typePayment,Clients);
 
                         UpdateAllDataView();
                         SetNullValuesToProperties();
@@ -348,19 +341,19 @@ namespace ManageStaffDBApp.ViewModel
                 {
                     string resultStr = "Ничего не выбрано";
                     //если сотрудник
-                    if (SelectedTabItem.Name == "UsersTab" && SelectedUser != null)
+                    if (SelectedTabItem.Name == "UsersTab" && SelectedClients != null)
                     {
-                        OpenEditUserWindowMethod(SelectedUser);
+                        OpenEditUserWindowMethod(SelectedClients);
                     }
                     //если позиция
-                    if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
+                    if (SelectedTabItem.Name == "PositionsTab" && SelectedReservations != null)
                     {
-                        OpenEditPositionWindowMethod(SelectedPosition);
+                        OpenEditPositionWindowMethod(SelectedReservations);
                     }
                     //если отдел
-                    if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null)
+                    if (SelectedTabItem.Name == "DepartmentsTab" && SelectedRooms != null)
                     {
-                        OpenEditDepartmentWindowMethod(SelectedDepartment);
+                        OpenEditDepartmentWindowMethod(SelectedRooms);
                     }
                 }
                     );
