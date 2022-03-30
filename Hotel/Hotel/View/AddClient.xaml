@@ -1,0 +1,47 @@
+﻿<Window x:Class="Hotel.View.AddClient"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hotel.View"
+        xmlns:ViewModel="clr-namespace:ManageStaffDBApp.ViewModel"
+        mc:Ignorable="d"
+        x:Name="AddClietnsWnd"
+        Title="AddClient" Height="450" Width="800">
+    <Window.DataContext>
+        <ViewModel:DataManageVM></ViewModel:DataManageVM>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="1" >
+            <TextBlock Text="FirstName"/>
+            <TextBox Name="FirstNameText" Text="{Binding CliFirstName}"/>
+
+            <TextBlock Text="LastName"/>
+            <TextBox Name="LastNameText" Text="{Binding CliLastName}"/>
+
+
+            <TextBlock Text="Passport"/>
+            <TextBox Name="PassportText" Text="{Binding CliPassport}"/>
+
+            <TextBlock Text="DateOFBrith"/>
+            <DatePicker Name="DatePickerDateOfBrith" IsDropDownOpen="True" SelectedDateFormat="Short" Text="{Binding CliDateOfBrith}" DisplayDateStart="2022/01/09" />
+
+            <TextBlock Text="Gender"/>
+            <ComboBox Name="ComboBoxGender" Text="{Binding CliGender}">
+                <TextBlock Text="Муж."/>
+                <TextBlock Text="Жен."/>
+            </ComboBox>
+
+            <TextBlock Text="PhoneNumber"/>
+            <TextBox Name="PhoneNumberText" Text="{Binding CliPhoneNumber}" />
+
+            <Button Content="Save" FontSize="30" Command="{Binding AddNewClient}" CommandParameter="{Binding ElementName=AddClietnsWnd}" />
+        </StackPanel>
+    </Grid>
+</Window>

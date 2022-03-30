@@ -1,0 +1,120 @@
+﻿<Window x:Class="ManageStaffDBApp.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManageStaffDBApp.View"
+        xmlns:ViewModel="clr-namespace:ManageStaffDBApp.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <ViewModel:DataManageVM>
+            
+        </ViewModel:DataManageVM>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" SelectedItem="{Binding SelectedTabItem}">
+            <TabItem Name="ClientsTab">
+                <TabItem.Header>
+                    <TextBlock Text="Clients"/>
+                </TabItem.Header>
+                <TabItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Редактировать" Command="{Binding OpenEditItemWnd}"/>
+                        <MenuItem Header="Удалить" Command="{Binding DeleteItem}"/>
+                    </ContextMenu>
+                </TabItem.ContextMenu>
+                <ListView x:Name="ViewAllClietns" ItemsSource="{Binding AllClient}"
+                          SelectedItem="{Binding SelectedClient}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="FirstName"                                            
+                                            DisplayMemberBinding="{Binding Path=FirstName}"/>
+                            <GridViewColumn Header="LastName"
+                                            DisplayMemberBinding="{Binding Path=LastName}"/>
+                            <GridViewColumn Header="PhoneNumber"
+                                            DisplayMemberBinding="{Binding Path=PhoneNumber}"/>
+                            <GridViewColumn Header="Gender"
+                                            DisplayMemberBinding="{Binding Path=Gender}"/>
+                            <GridViewColumn Header="Passport"
+                                            DisplayMemberBinding="{Binding Path=Passport}"/>
+                            <GridViewColumn Header="DateOfBrith"
+                                            DisplayMemberBinding="{Binding Path=DateOfBrith }"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            <TabItem Name="RoomsTab">
+                <TabItem.Header>
+                    <TextBlock Text="Rooms"/>
+                </TabItem.Header>
+                <TabItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Редактировать" Command="{Binding OpenEditItemWnd}"/>
+                        <MenuItem Header="Удалить" Command="{Binding DeleteItem}"/>
+                    </ContextMenu>
+                </TabItem.ContextMenu>
+                <ListView x:Name="ViewAllRooms" ItemsSource="{Binding AllRooms}"
+                          SelectedItem="{Binding SelectedRoom}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Number"
+                                            DisplayMemberBinding="{Binding Path=Number}"/>
+                            <GridViewColumn Header="Floor"
+                                            DisplayMemberBinding="{Binding Path=Floor}"/>
+                            <GridViewColumn Header="Type"
+                                            DisplayMemberBinding="{Binding Path=Type}"/>
+                            <GridViewColumn Header="Capfcity"
+                                            DisplayMemberBinding="{Binding Path=Capfcity}"/>
+                            <GridViewColumn Header="Status"
+                                            DisplayMemberBinding="{Binding Path=Status}"/>
+                            <GridViewColumn Header="Price"
+                                            DisplayMemberBinding="{Binding Path=Price}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            <TabItem Name="ReservationsTab">
+                <TabItem.Header>
+                    <TextBlock Text="Reservations"/>
+                </TabItem.Header>
+                <TabItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Редактировать" Command="{Binding OpenEditItemWnd}"/>
+                        <MenuItem Header="Удалить" Command="{Binding DeleteItem}"/>
+                    </ContextMenu>
+                </TabItem.ContextMenu>
+                <ListView x:Name="ViewAllReservations" ItemsSource="{Binding AllReservationts}"
+                          SelectedItem="{Binding SelectedReservation}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="CheckInDate" 
+                                            DisplayMemberBinding="{Binding Path=CheckInDate}"/>
+                            <GridViewColumn Header="CheckOutDate" 
+                                            DisplayMemberBinding="{Binding Path=CheckOutDate}"/>
+                            <GridViewColumn Header="Clients" 
+                                            DisplayMemberBinding="{Binding Path=ResClient.FirstName}"/>
+                            <GridViewColumn Header="Room" 
+                                            DisplayMemberBinding="{Binding Path=ResRoom.Number}"/>
+                            <GridViewColumn Header="ReservationStatus" 
+                                            DisplayMemberBinding="{Binding Path=ReservationStatus}"/>
+                            <GridViewColumn Header="typePayment" 
+                                            DisplayMemberBinding="{Binding Path=typePayment}"/>
+                           
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Content="Новый  Client" Command="{Binding OpenAddNewUserWnd}"/>
+            <Button Content="Новая Room" Command="{Binding OpenAddNewPositionWnd}"/>
+            <Button Content="Новый Reservation" Command="{Binding OpenAddNewDepartmentWnd}"/>
+        </StackPanel>
+    </Grid>
+</Window>
